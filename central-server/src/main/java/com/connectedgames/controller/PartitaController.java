@@ -2,17 +2,19 @@ package com.connectedgames.controller;
 
 import com.connectedgames.model.Partita;
 import com.connectedgames.service.PartitaService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/partite")
-@RequiredArgsConstructor
 public class PartitaController {
 
     private final PartitaService partitaService;
+
+    public PartitaController(PartitaService partitaService) {
+        this.partitaService = partitaService;
+    }
 
     @GetMapping
     public List<Partita> getAll() {

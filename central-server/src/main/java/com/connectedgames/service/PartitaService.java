@@ -2,16 +2,18 @@ package com.connectedgames.service;
 
 import com.connectedgames.model.Partita;
 import com.connectedgames.repository.PartitaRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PartitaService {
 
     private final PartitaRepository partitaRepository;
+
+    public PartitaService(PartitaRepository partitaRepository) {
+        this.partitaRepository = partitaRepository;
+    }
 
     public List<Partita> findAll() {
         return partitaRepository.findAll();

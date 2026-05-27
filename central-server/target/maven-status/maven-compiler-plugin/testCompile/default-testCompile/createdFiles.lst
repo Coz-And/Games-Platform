@@ -1,0 +1,7 @@
+com/connectedgames/service/LocaleServiceTest.class
+com/connectedgames/service/TorneoServiceTest.class
+com/connectedgames/service/UtenteServiceTest.class
+com/connectedgames/CentralServerApplicationTest.class
+com/connectedgames/service/GiocoServiceTest.class
+com/connectedgames/service/UtenteControllerTest.class
+com/connectedgames/service/PartitaServiceTest.class

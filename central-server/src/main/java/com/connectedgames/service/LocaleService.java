@@ -2,15 +2,17 @@ package com.connectedgames.service;
 
 import com.connectedgames.model.Locale;
 import com.connectedgames.repository.LocaleRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class LocaleService {
 
     private final LocaleRepository localeRepository;
+
+    public LocaleService(LocaleRepository localeRepository) {
+        this.localeRepository = localeRepository;
+    }
 
     public List<Locale> findAll() {
         return localeRepository.findAll();

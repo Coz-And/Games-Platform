@@ -2,15 +2,17 @@ package com.connectedgames.service;
 
 import com.connectedgames.model.Gioco;
 import com.connectedgames.repository.GiocoRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class GiocoService {
 
     private final GiocoRepository giocoRepository;
+
+    public GiocoService(GiocoRepository giocoRepository) {
+        this.giocoRepository = giocoRepository;
+    }
 
     public List<Gioco> findAll() {
         return giocoRepository.findAll();

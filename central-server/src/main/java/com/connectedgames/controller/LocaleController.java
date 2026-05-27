@@ -2,17 +2,19 @@ package com.connectedgames.controller;
 
 import com.connectedgames.model.Locale;
 import com.connectedgames.service.LocaleService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/locali")
-@RequiredArgsConstructor
 public class LocaleController {
 
     private final LocaleService localeService;
+
+    public LocaleController(LocaleService localeService) {
+        this.localeService = localeService;
+    }
 
     @GetMapping
     public List<Locale> getAll() {

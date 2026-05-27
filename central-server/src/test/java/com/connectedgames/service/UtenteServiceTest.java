@@ -77,4 +77,4 @@ class UtenteServiceTest {
         utenteService.delete(1L);
         verify(utenteRepository).deleteById(1L);
     }
-}}
+}

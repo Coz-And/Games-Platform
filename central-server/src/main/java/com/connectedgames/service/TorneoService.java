@@ -2,15 +2,17 @@ package com.connectedgames.service;
 
 import com.connectedgames.model.Torneo;
 import com.connectedgames.repository.TorneoRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class TorneoService {
 
     private final TorneoRepository torneoRepository;
+
+    public TorneoService(TorneoRepository torneoRepository) {
+        this.torneoRepository = torneoRepository;
+    }
 
     public List<Torneo> findAll() {
         return torneoRepository.findAll();
@@ -19,6 +21,10 @@ public class TorneoService {
     public Torneo findById(Long id) {
         return torneoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Torneo non trovato con id: " + id));
+    }
+
+    public List<Torneo> findByStato(Torneo.StatoTorneo stato) {
+        return torneoRepository.findByStato(stato);
     }
 
     public Torneo save(Torneo torneo) {

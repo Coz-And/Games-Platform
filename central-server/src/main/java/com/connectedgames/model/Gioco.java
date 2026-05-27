@@ -2,12 +2,8 @@ package com.connectedgames.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "giochi")
 public class Gioco {
@@ -34,10 +30,18 @@ public class Gioco {
     @OneToMany(mappedBy = "gioco", cascade = CascadeType.ALL)
     private List<Partita> partite;
 
-    public enum TipoGioco {
-        CALCIOBALILLA,
-        FRECCETTE,
-        BOCCE,
-        MONOPOLI
-    }
+    public enum TipoGioco { CALCIOBALILLA, FRECCETTE, BOCCE, MONOPOLI }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public TipoGioco getTipo() { return tipo; }
+    public void setTipo(TipoGioco tipo) { this.tipo = tipo; }
+    public String getIdentificatore() { return identificatore; }
+    public void setIdentificatore(String identificatore) { this.identificatore = identificatore; }
+    public Locale getLocale() { return locale; }
+    public void setLocale(Locale locale) { this.locale = locale; }
+    public List<Partita> getPartite() { return partite; }
+    public void setPartite(List<Partita> partite) { this.partite = partite; }
 }

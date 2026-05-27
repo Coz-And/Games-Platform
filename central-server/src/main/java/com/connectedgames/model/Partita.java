@@ -1,13 +1,9 @@
 package com.connectedgames.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "partite")
 public class Partita {
@@ -48,14 +44,25 @@ public class Partita {
     @JoinColumn(name = "torneo_id")
     private Torneo torneo;
 
-    public enum StatoPartita {
-        IN_CORSO,
-        TERMINATA,
-        ANNULLATA
-    }
+    public enum StatoPartita { IN_CORSO, TERMINATA, ANNULLATA }
+    public enum TipoPartita { INDIVIDUALE, A_SQUADRE }
 
-    public enum TipoPartita {
-        INDIVIDUALE,
-        A_SQUADRE
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Gioco getGioco() { return gioco; }
+    public void setGioco(Gioco gioco) { this.gioco = gioco; }
+    public LocalDateTime getIniziata() { return iniziata; }
+    public void setIniziata(LocalDateTime iniziata) { this.iniziata = iniziata; }
+    public LocalDateTime getTerminata() { return terminata; }
+    public void setTerminata(LocalDateTime terminata) { this.terminata = terminata; }
+    public StatoPartita getStato() { return stato; }
+    public void setStato(StatoPartita stato) { this.stato = stato; }
+    public TipoPartita getTipo() { return tipo; }
+    public void setTipo(TipoPartita tipo) { this.tipo = tipo; }
+    public List<Utente> getGiocatori() { return giocatori; }
+    public void setGiocatori(List<Utente> giocatori) { this.giocatori = giocatori; }
+    public Risultato getRisultato() { return risultato; }
+    public void setRisultato(Risultato risultato) { this.risultato = risultato; }
+    public Torneo getTorneo() { return torneo; }
+    public void setTorneo(Torneo torneo) { this.torneo = torneo; }
 }

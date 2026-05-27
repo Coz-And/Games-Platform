@@ -2,17 +2,19 @@ package com.connectedgames.controller;
 
 import com.connectedgames.model.Utente;
 import com.connectedgames.service.UtenteService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/utenti")
-@RequiredArgsConstructor
 public class UtenteController {
 
     private final UtenteService utenteService;
+
+    public UtenteController(UtenteService utenteService) {
+        this.utenteService = utenteService;
+    }
 
     @GetMapping
     public List<Utente> getAll() {

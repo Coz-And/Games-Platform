@@ -2,12 +2,8 @@ package com.connectedgames.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "locali")
 public class Locale {
@@ -35,8 +31,18 @@ public class Locale {
     @OneToMany(mappedBy = "locale", cascade = CascadeType.ALL)
     private List<Gioco> giochi;
 
-    public enum TipoLocale {
-        PUBBLICO,
-        PRIVATO
-    }
+    public enum TipoLocale { PUBBLICO, PRIVATO }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getIndirizzo() { return indirizzo; }
+    public void setIndirizzo(String indirizzo) { this.indirizzo = indirizzo; }
+    public TipoLocale getTipo() { return tipo; }
+    public void setTipo(TipoLocale tipo) { this.tipo = tipo; }
+    public Utente getAmministratore() { return amministratore; }
+    public void setAmministratore(Utente amministratore) { this.amministratore = amministratore; }
+    public List<Gioco> getGiochi() { return giochi; }
+    public void setGiochi(List<Gioco> giochi) { this.giochi = giochi; }
 }

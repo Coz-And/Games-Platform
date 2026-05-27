@@ -2,17 +2,19 @@ package com.connectedgames.controller;
 
 import com.connectedgames.model.Torneo;
 import com.connectedgames.service.TorneoService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tornei")
-@RequiredArgsConstructor
 public class TorneoController {
 
     private final TorneoService torneoService;
+
+    public TorneoController(TorneoService torneoService) {
+        this.torneoService = torneoService;
+    }
 
     @GetMapping
     public List<Torneo> getAll() {
