@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::content})}">
+<body>
+<div th:fragment="content">
+    <div class="page-title">🛡️ Admin piattaforma</div>
+
+    <div class="grid2">
+        <div class="metric">
+            <div class="metric-label">Utenti totali</div>
+            <div class="metric-value" th:text="${stats.utentiTotali}">1.284</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Locali attivi</div>
+            <div class="metric-value" th:text="${stats.localiTotali}">38</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Partite totali</div>
+            <div class="metric-value" th:text="${stats.partiteTotali}">9.421</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Tornei attivi</div>
+            <div class="metric-value" th:text="${stats.torneiAttivi}">7</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title" style="margin:0">Gestione utenti</div>
+            <a href="/admin/utenti/nuovo" class="btn btn-primary">+ Nuovo utente</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr><th>Nome</th><th>Email</th><th>Ruolo</th><th>Azioni</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="u : ${utenti}">
+                <td th:text="${u.nome + ' ' + u.cognome}">Mario Rossi</td>
+                <td th:text="${u.email}">mario@test.it</td>
+                <td>
+                        <span class="badge"
+                              th:classappend="${u.ruolo.name() == 'ADMIN_PIATTAFORMA'} ? 'badge-red' : (${u.ruolo.name() == 'ADMIN_LOCALE'} ? 'badge-amber' : 'badge-blue')"
+                              th:text="${u.ruolo}">GIOCATORE</span>
+                </td>
+                <td style="display:flex; gap:6px;">
+                    <a th:href="@{/admin/utenti/modifica/{id}(id=${u.id})}" class="btn">Modifica</a>
+                    <form th:action="@{/admin/utenti/elimina/{id}(id=${u.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Eliminare questo utente?')">Elimina</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title" style="margin:0">Gestione locali</div>
+            <a href="/admin/locali/nuovo" class="btn btn-primary">+ Nuovo locale</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr><th>Nome</th><th>Indirizzo</th><th>Tipo</th><th>Admin</th><th>Azioni</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="l : ${locali}">
+                <td th:text="${l.nome}">Bar Belvedere</td>
+                <td th:text="${l.indirizzo}">Via Roma 1</td>
+                <td>
+                        <span class="badge"
+                              th:classappend="${l.tipo.name() == 'PUBBLICO'} ? 'badge-blue' : 'badge-amber'"
+                              th:text="${l.tipo}">PUBBLICO</span>
+                </td>
+                <td th:text="${l.amministratore?.nome}">Luca</td>
+                <td>
+                    <a th:href="@{/admin/locali/modifica/{id}(id=${l.id})}" class="btn">Modifica</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Tornei</div>
+        <table class="table">
+            <thead>
+            <tr><th>Nome</th><th>Gioco</th><th>Inizio</th><th>Stato</th><th>Azioni</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="t : ${tornei}">
+                <td th:text="${t.nome}">Torneo Calciobalilla</td>
+                <td th:text="${t.tipoGioco}">CALCIOBALILLA</td>
+                <td th:text="${#temporals.format(t.inizioTorneo, 'dd/MM/yyyy')}">01/06/2026</td>
+                <td>
+                        <span class="badge"
+                              th:classappend="${t.stato.name() == 'IN_CORSO'} ? 'badge-blue' : (${t.stato.name() == 'TERMINATO'} ? 'badge-green' : 'badge-amber')"
+                              th:text="${t.stato}">IN_CORSO</span>
+                </td>
+                <td>
+                    <a th:href="@{/admin/tornei/{id}(id=${t.id})}" class="btn">Dettagli</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

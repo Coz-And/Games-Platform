@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::content})}">
+<body>
+<div th:fragment="content">
+    <div class="page-title">📅 Prenota un gioco</div>
+
+    <div th:if="${messaggio}" class="alert alert-success" th:text="${messaggio}"></div>
+    <div th:if="${errore}" class="alert alert-error" th:text="${errore}"></div>
+
+    <div class="card">
+        <div class="card-title">Scegli il gioco</div>
+        <div class="game-grid">
+            <div th:each="g : ${giochi}"
+                 class="game-card"
+                 th:onclick="|selezionaGioco(${g.id}, '${g.nome}')|"
+                 th:id="|game-${g.id}|">
+                <div class="game-icon">🎮</div>
+                <div class="game-name" th:text="${g.nome}">Calciobalilla</div>
+                <div class="game-meta" th:text="${g.locale.nome}">Bar Belvedere</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" id="slot-section" style="display:none;">
+        <div class="card-title">Slot disponibili — <span id="gioco-selezionato"></span></div>
+        <div id="slot-list">
+            <div class="booking-slot">
+                <div><div class="slot-time">14:00 – 14:30</div><div class="slot-info">Tavolo 1</div></div>
+                <form th:action="@{/prenotazioni/nuova}" method="post">
+                    <input type="hidden" name="giocoId" id="giocoId-14" value="">
+                    <input type="hidden" name="orario" value="14:00">
+                    <button type="submit" class="btn btn-primary">Prenota</button>
+                </form>
+            </div>
+            <div class="booking-slot">
+                <div><div class="slot-time">15:00 – 15:30</div><div class="slot-info">Tavolo 1</div></div>
+                <form th:action="@{/prenotazioni/nuova}" method="post">
+                    <input type="hidden" name="giocoId" id="giocoId-15" value="">
+                    <input type="hidden" name="orario" value="15:00">
+                    <button type="submit" class="btn btn-primary">Prenota</button>
+                </form>
+            </div>
+            <div class="booking-slot">
+                <div><div class="slot-time">16:30 – 17:00</div><div class="slot-info">Tavolo 2</div></div>
+                <form th:action="@{/prenotazioni/nuova}" method="post">
+                    <input type="hidden" name="giocoId" id="giocoId-16" value="">
+                    <input type="hidden" name="orario" value="16:30">
+                    <button type="submit" class="btn btn-primary">Prenota</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Le mie prenotazioni</div>
+        <table class="table">
+            <thead>
+            <tr><th>Gioco</th><th>Locale</th><th>Orario</th><th>Stato</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${miePrenotazioni}">
+                <td th:text="${p.gioco.nome}">Calciobalilla</td>
+                <td th:text="${p.gioco.locale.nome}">Bar Belvedere</td>
+                <td th:text="${p.orario}">14:00</td>
+                <td><span class="badge badge-blue">Confermata</span></td>
+                <td>
+                    <form th:action="@{/prenotazioni/cancella/{id}(id=${p.id})}" method="post">
+                        <button type="submit" class="btn btn-danger">Cancella</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function selezionaGioco(id, nome) {
+            document.querySelectorAll('.game-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('game-' + id).classList.add('selected');
+            document.getElementById('gioco-selezionato').textContent = nome;
+            document.getElementById('slot-section').style.display = 'block';
+            document.querySelectorAll('[id^="giocoId-"]').forEach(i => i.value = id);
+        }
+    </script>
+</div>
+</body>
+</html>

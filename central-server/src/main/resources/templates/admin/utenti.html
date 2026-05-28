@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gestione Utenti</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; }
+        nav { background: #1a1a2e; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        nav a { color: white; text-decoration: none; margin-left: 1.5rem; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        h1 { color: #1a1a2e; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f0f0f0; }
+        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; background: #cce5ff; color: #004085; }
+    </style>
+</head>
+<body>
+<nav>
+    <span style="font-weight:bold;">🎮 Connected Games — Admin</span>
+    <div>
+        <a th:href="@{/admin/dashboard}">Dashboard</a>
+        <a th:href="@{/admin/utenti}">Utenti</a>
+        <a th:href="@{/admin/tornei}">Tornei</a>
+    </div>
+</nav>
+<div class="container">
+    <h1>👥 Gestione Utenti</h1>
+    <div class="card">
+        <table>
+            <thead>
+            <tr><th>ID</th><th>Nome</th><th>Email</th><th>Ruolo</th></tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(utenti)}">
+                <td colspan="4" style="color:#888; text-align:center;">Nessun utente registrato</td>
+            </tr>
+            <tr th:each="u : ${utenti}">
+                <td th:text="${u.id}">1</td>
+                <td th:text="${u.nome} + ' ' + ${u.cognome}">Nome</td>
+                <td th:text="${u.email}">email</td>
+                <td><span class="badge" th:text="${u.ruolo}">RUOLO</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
