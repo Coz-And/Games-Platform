@@ -2,17 +2,15 @@ package com.connectedgames.service;
 
 import com.connectedgames.model.Gioco;
 import com.connectedgames.repository.GiocoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class GiocoService {
 
-    private final GiocoRepository giocoRepository;
-
-    public GiocoService(GiocoRepository giocoRepository) {
-        this.giocoRepository = giocoRepository;
-    }
+    @Autowired
+    private GiocoRepository giocoRepository;
 
     public List<Gioco> findAll() {
         return giocoRepository.findAll();

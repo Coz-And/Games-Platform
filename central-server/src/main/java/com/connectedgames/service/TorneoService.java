@@ -2,17 +2,15 @@ package com.connectedgames.service;
 
 import com.connectedgames.model.Torneo;
 import com.connectedgames.repository.TorneoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class TorneoService {
 
-    private final TorneoRepository torneoRepository;
-
-    public TorneoService(TorneoRepository torneoRepository) {
-        this.torneoRepository = torneoRepository;
-    }
+    @Autowired
+    private TorneoRepository torneoRepository;
 
     public List<Torneo> findAll() {
         return torneoRepository.findAll();

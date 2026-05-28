@@ -26,6 +26,10 @@ public class Utente {
     private String email;
 
     @NotBlank
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @NotBlank
     @Column(nullable = false)
     private String passwordHash;
 
@@ -34,19 +38,30 @@ public class Utente {
     private RuoloUtente ruolo;
 
     public enum RuoloUtente {
-        GIOCATORE, ADMIN_LOCALE, ADMIN_GIOCO, ADMIN_PIATTAFORMA
+        GIOCATORE,
+        ADMIN_LOCALE,
+        ADMIN_GIOCO,
+        ADMIN_PIATTAFORMA
     }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
+
     public String getCognome() { return cognome; }
     public void setCognome(String cognome) { this.cognome = cognome; }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+
     public RuoloUtente getRuolo() { return ruolo; }
     public void setRuolo(RuoloUtente ruolo) { this.ruolo = ruolo; }
 }

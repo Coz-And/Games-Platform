@@ -2,17 +2,15 @@ package com.connectedgames.service;
 
 import com.connectedgames.model.Locale;
 import com.connectedgames.repository.LocaleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class LocaleService {
 
-    private final LocaleRepository localeRepository;
-
-    public LocaleService(LocaleRepository localeRepository) {
-        this.localeRepository = localeRepository;
-    }
+    @Autowired
+    private LocaleRepository localeRepository;
 
     public List<Locale> findAll() {
         return localeRepository.findAll();

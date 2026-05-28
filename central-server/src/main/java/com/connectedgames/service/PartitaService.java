@@ -2,6 +2,7 @@ package com.connectedgames.service;
 
 import com.connectedgames.model.Partita;
 import com.connectedgames.repository.PartitaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,11 +10,8 @@ import java.util.List;
 @Service
 public class PartitaService {
 
-    private final PartitaRepository partitaRepository;
-
-    public PartitaService(PartitaRepository partitaRepository) {
-        this.partitaRepository = partitaRepository;
-    }
+    @Autowired
+    private PartitaRepository partitaRepository;
 
     public List<Partita> findAll() {
         return partitaRepository.findAll();
