@@ -6,6 +6,7 @@
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/model/Torneo.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/service/TorneoService.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/repository/LocaleRepository.java
+/Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/controller/StatisticheController.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/config/SwaggerConfig.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/service/GiocoService.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/CentralServerApplication.java
@@ -13,6 +14,7 @@
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/repository/UtenteRepository.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/repository/TorneoRepository.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/service/UtenteService.java
+/Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/controller/RisultatoController.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/model/Locale.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/model/Partita.java
 /Users/andreacozzi/IdeaProjects/Games-Platform/central-server/src/main/java/com/connectedgames/config/SecurityConfig.java
