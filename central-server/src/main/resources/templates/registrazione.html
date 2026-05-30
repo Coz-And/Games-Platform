@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Registrazione — Connected Games</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #1a1a2e; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .reg-box { background: white; border-radius: 12px; padding: 2.5rem; width: 100%; max-width: 450px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        .logo { text-align: center; margin-bottom: 2rem; }
+        .logo h1 { font-size: 1.8rem; color: #1a1a2e; }
+        .logo p { color: #888; font-size: 0.9rem; margin-top: 0.3rem; }
+        label { display: block; margin-bottom: 0.3rem; font-weight: bold; font-size: 0.9rem; color: #333; }
+        input, select { width: 100%; padding: 0.7rem; margin-bottom: 1.2rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; }
+        input:focus, select:focus { outline: none; border-color: #e94560; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .btn { width: 100%; background: #e94560; color: white; border: none; padding: 0.85rem; border-radius: 6px; font-size: 1rem; cursor: pointer; font-weight: bold; margin-top: 0.5rem; }
+        .btn:hover { background: #c73652; }
+        .msg-errore { background: #f8d7da; color: #721c24; padding: 0.7rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; }
+        .msg-successo { background: #d4edda; color: #155724; padding: 0.7rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; }
+        .footer-link { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #666; }
+        .footer-link a { color: #e94560; text-decoration: none; font-weight: bold; }
+        .password-hint { font-size: 0.8rem; color: #888; margin-top: -0.8rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+<div class="reg-box">
+    <div class="logo">
+        <h1>🎮 Connected Games</h1>
+        <p>Crea il tuo account</p>
+    </div>
+
+    <div class="msg-errore" th:if="${param.error}">
+        ❌ Errore nella registrazione. Email o username già in uso.
+    </div>
+    <div class="msg-successo" th:if="${param.success}">
+        ✅ Registrazione completata! Ora puoi accedere.
+    </div>
+
+    <form th:action="@{/registrazione}" method="post">
+        <div class="row">
+            <div>
+                <label>Nome</label>
+                <input type="text" name="nome" placeholder="Mario" required minlength="2"/>
+            </div>
+            <div>
+                <label>Cognome</label>
+                <input type="text" name="cognome" placeholder="Rossi" required minlength="2"/>
+            </div>
+        </div>
+
+        <label>Email</label>
+        <input type="email" name="email" placeholder="mario.rossi@email.it" required/>
+
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Scegli uno username" required minlength="3"/>
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Minimo 8 caratteri" required minlength="8"/>
+        <p class="password-hint">Minimo 8 caratteri</p>
+
+        <label>Ruolo</label>
+        <select name="ruolo">
+            <option value="GIOCATORE">🎮 Giocatore</option>
+            <option value="ADMIN_LOCALE">🏠 Amministratore Locale</option>
+        </select>
+
+        <button class="btn" type="submit">Registrati</button>
+    </form>
+
+    <div class="footer-link">
+        Hai già un account? <a th:href="@{/login}">Accedi</a>
+    </div>
+</div>
+</body>
+</html>

@@ -7,17 +7,23 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ViewController {
 
-    @Autowired private UtenteService utenteService;
-    @Autowired private LocaleService localeService;
-    @Autowired private GiocoService giocoService;
-    @Autowired private PartitaService partitaService;
-    @Autowired private TorneoService torneoService;
+    @Autowired
+    private UtenteService utenteService;
+    @Autowired
+    private LocaleService localeService;
+    @Autowired
+    private GiocoService giocoService;
+    @Autowired
+    private PartitaService partitaService;
+    @Autowired
+    private TorneoService torneoService;
 
     // ── Home ───────────────────────────────────────────────────
     @GetMapping("/")
@@ -120,36 +126,72 @@ public class ViewController {
         return "prenotazione";
     }
 
-    // ── Admin ──────────────────────────────────────────────────
-    @GetMapping("/admin/locale")
-    public String adminLocale(Model model) {
-        model.addAttribute("locali", localeService.findAll());
-        model.addAttribute("giochi", giocoService.findAll());
+    // ── Admin Locale — Partite ─────────────────────────────────
+    @GetMapping("/admin/locale/partite")
+    public String adminLocalePartite(Model model) {
         model.addAttribute("partite", partitaService.findAll());
-        return "admin/locale/dashboard";
+        model.addAttribute("giochi", giocoService.findAll());
+        return "admin/locale/partite";
     }
 
-    @GetMapping("/admin/dashboard")
-    public String adminDashboard(Model model) {
-        model.addAttribute("utenti", utenteService.findAll());
-        model.addAttribute("locali", localeService.findAll());
+    @GetMapping("/admin/locale/partite/nuova")
+    public String nuovaPartitaForm(Model model) {
         model.addAttribute("giochi", giocoService.findAll());
+        model.addAttribute("utenti", utenteService.findAll());
+        return "admin/locale/nuova-partita";
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard(@AuthenticationPrincipal UserDetails userDetails,
+                            Model model) {
+        Utente utente = utenteService.findByUsername(userDetails.getUsername());
+        model.addAttribute("utente", utente);
+
+        if (utente.getRuolo() == Utente.RuoloUtente.ADMIN_PIATTAFORMA) {
+            return "redirect:/admin/dashboard";
+        }
+        if (utente.getRuolo() == Utente.RuoloUtente.ADMIN_LOCALE ||
+                utente.getRuolo() == Utente.RuoloUtente.ADMIN_GIOCO) {
+            return "redirect:/admin/locale";
+        }
+
+        model.addAttribute("partite", partitaService.findByGiocatore(utente.getId()));
+        model.addAttribute("tornei", torneoService.findAll());
+        return "utente/dashboard";
+    }
+
+    @PostMapping("/admin/locale/partite/nuova")
+    public String nuovaPartita(
+            @RequestParam Long giocoId,
+            @RequestParam String tipo,
+            @RequestParam(required = false) List<Long> giocatoriIds,
+            RedirectAttributes redirectAttributes) {
+        try {
+            Partita partita = new Partita();
+            partita.setGioco(giocoService.findById(giocoId));
+            partita.setTipo(Partita.TipoPartita.valueOf(tipo));
+            partitaService.iniziaPartita(partita);
+            redirectAttributes.addFlashAttribute("success", "Partita creata!");
+            return "redirect:/admin/locale/partite";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errore", e.getMessage());
+            return "redirect:/admin/locale/partite/nuova";
+        }
+    }
+
+    @PostMapping("/admin/locale/partite/{id}/termina")
+    public String terminaPartita(@PathVariable Long id,
+                                 RedirectAttributes redirectAttributes) {
+        partitaService.terminaPartita(id);
+        redirectAttributes.addFlashAttribute("success", "Partita terminata!");
+        return "redirect:/admin/locale/partite";
+    }
+
+    // ── Admin Locale — Utenti iscritti ────────────────────────
+    @GetMapping("/admin/locale/utenti")
+    public String adminLocaleUtenti(Model model) {
+        model.addAttribute("utenti", utenteService.findAll());
         model.addAttribute("partite", partitaService.findAll());
-        model.addAttribute("tornei", torneoService.findAll());
-        return "admin/dashboard";
-    }
-
-    @GetMapping("/admin/utenti")
-    public String adminUtenti(Model model) {
-        model.addAttribute("utenti", utenteService.findAll());
-        return "admin/utenti";
-    }
-
-    @GetMapping("/admin/tornei")
-    public String adminTornei(Model model) {
-        model.addAttribute("tornei", torneoService.findAll());
-        model.addAttribute("giochi", giocoService.findAll());
-        model.addAttribute("locali", localeService.findAll());
-        return "admin/tornei";
+        return "admin/locale/utenti";
     }
 }

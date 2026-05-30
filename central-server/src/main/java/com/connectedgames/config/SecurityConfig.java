@@ -74,6 +74,20 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 );
+                        .authorizeHttpRequests(auth -> auth
+                            .requestMatchers(
+                                    "/", "/login", "/registrazione",
+                                    "/giochi", "/partite", "/tornei",
+                                    "/statistiche", "/prenotazione",
+                                    "/swagger-ui/**", "/v3/api-docs/**",
+                                    "/h2-console/**"
+                            ).permitAll()
+                            .requestMatchers("/admin/dashboard").hasAuthority("ADMIN_PIATTAFORMA")
+                            .requestMatchers("/admin/locale/**").hasAnyAuthority(
+                                    "ADMIN_LOCALE", "ADMIN_GIOCO", "ADMIN_PIATTAFORMA")
+                            .requestMatchers("/dashboard", "/profilo").authenticated()
+                            .anyRequest().authenticated()
+        );
 
         http.headers(headers -> headers
                 .frameOptions(frame -> frame.disable()));

@@ -15,7 +15,8 @@
         input:focus { outline: none; border-color: #e94560; }
         .btn { width: 100%; background: #e94560; color: white; border: none; padding: 0.85rem; border-radius: 6px; font-size: 1rem; cursor: pointer; font-weight: bold; }
         .btn:hover { background: #c73652; }
-        .error { background: #f8d7da; color: #721c24; padding: 0.7rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; }
+        .msg-errore { background: #f8d7da; color: #721c24; padding: 0.7rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; }
+        .msg-successo { background: #d4edda; color: #155724; padding: 0.7rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; }
         .footer-link { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #666; }
         .footer-link a { color: #e94560; text-decoration: none; font-weight: bold; }
     </style>
@@ -27,11 +28,14 @@
         <p>Accedi alla piattaforma</p>
     </div>
 
-    <div class="error" th:if="${param.error}">
-        Username o password errati. Riprova.
+    <div class="msg-errore" th:if="${param.error}">
+        ❌ Username o password errati. Riprova.
     </div>
-    <div class="error" th:if="${param.logout}" style="background:#d4edda; color:#155724;">
-        Logout effettuato con successo.
+    <div class="msg-successo" th:if="${param.logout}">
+        ✅ Logout effettuato con successo.
+    </div>
+    <div class="msg-successo" th:if="${param.success}">
+        ✅ Registrazione completata! Ora puoi accedere.
     </div>
 
     <form th:action="@{/login}" method="post">
@@ -46,17 +50,6 @@
 
     <div class="footer-link">
         Non hai un account? <a th:href="@{/registrazione}">Registrati</a>
-    </div>
-    <div class="error" th:if="${param.error}">
-        Username o password errati. Riprova.
-    </div>
-    <div class="error" th:if="${param.logout}"
-         style="background:#d4edda; color:#155724;">
-        Logout effettuato con successo.
-    </div>
-    <div class="error" th:if="${param.success}"
-         style="background:#d4edda; color:#155724;">
-        Registrazione completata! Ora puoi accedere.
     </div>
 </div>
 </body>
