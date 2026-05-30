@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Profilo — Connected Games</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        nav { background: #1a1a2e; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        nav a { color: white; text-decoration: none; margin-left: 1.5rem; }
+        nav a:hover { color: #e94560; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+        .avatar { width: 80px; height: 80px; background: #e94560; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; margin-bottom: 1rem; }
+        h1 { color: #1a1a2e; margin-bottom: 0.3rem; }
+        .ruolo { display: inline-block; background: #1a1a2e; color: white; padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.85rem; margin-bottom: 1.5rem; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .info-item label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 0.2rem; text-transform: uppercase; }
+        .info-item span { font-size: 1rem; color: #333; font-weight: 500; }
+        h2 { color: #1a1a2e; margin-bottom: 1rem; font-size: 1.1rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        th { background: #f8f8f8; }
+        .btn-logout { display: inline-block; margin-top: 1rem; background: #e94560; color: white; padding: 0.7rem 1.5rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+<nav>
+    <span style="font-weight:bold;">🎮 Connected Games</span>
+    <div>
+        <a th:href="@{/dashboard}">Dashboard</a>
+        <a th:href="@{/giochi}">Giochi</a>
+        <a th:href="@{/tornei}">Tornei</a>
+        <a th:href="@{/logout}" style="color:#e94560;">Esci</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <div class="avatar">👤</div>
+        <h1 th:text="${utente.nome} + ' ' + ${utente.cognome}">Mario Rossi</h1>
+        <span class="ruolo" th:text="${utente.ruolo}">GIOCATORE</span>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Username</label>
+                <span th:text="${utente.username}">username</span>
+            </div>
+            <div class="info-item">
+                <label>Email</label>
+                <span th:text="${utente.email}">email</span>
+            </div>
+            <div class="info-item">
+                <label>Nome</label>
+                <span th:text="${utente.nome}">Nome</span>
+            </div>
+            <div class="info-item">
+                <label>Cognome</label>
+                <span th:text="${utente.cognome}">Cognome</span>
+            </div>
+        </div>
+
+        <a th:href="@{/logout}" class="btn-logout">Logout</a>
+    </div>
+
+    <div class="card">
+        <h2>🏁 Le mie Partite</h2>
+        <p th:if="${#lists.isEmpty(partite)}" style="color:#888; text-align:center; padding:1rem;">
+            Non hai ancora giocato nessuna partita.
+        </p>
+        <table th:unless="${#lists.isEmpty(partite)}">
+            <thead>
+            <tr><th>Gioco</th><th>Tipo</th><th>Stato</th><th>Data</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${partite}">
+                <td th:text="${p.gioco != null ? p.gioco.nome : 'N/A'}">Gioco</td>
+                <td th:text="${p.tipo}">TIPO</td>
+                <td th:text="${p.stato}">STATO</td>
+                <td th:text="${#temporals.format(p.iniziata, 'dd/MM/yyyy HH:mm')}">-</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
