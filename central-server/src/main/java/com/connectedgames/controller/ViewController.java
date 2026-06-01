@@ -1,5 +1,6 @@
 package com.connectedgames.controller;
 
+import com.connectedgames.model.Partita;
 import com.connectedgames.model.Utente;
 import com.connectedgames.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,25 +8,19 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.List;
 
 @Controller
 public class ViewController {
 
-    @Autowired
-    private UtenteService utenteService;
-    @Autowired
-    private LocaleService localeService;
-    @Autowired
-    private GiocoService giocoService;
-    @Autowired
-    private PartitaService partitaService;
-    @Autowired
-    private TorneoService torneoService;
+    @Autowired private UtenteService utenteService;
+    @Autowired private LocaleService localeService;
+    @Autowired private GiocoService giocoService;
+    @Autowired private PartitaService partitaService;
+    @Autowired private TorneoService torneoService;
 
-    // ── Home ───────────────────────────────────────────────────
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("giochi", giocoService.findAll());
@@ -33,13 +28,11 @@ public class ViewController {
         return "index";
     }
 
-    // ── Login ──────────────────────────────────────────────────
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    // ── Registrazione ──────────────────────────────────────────
     @GetMapping("/registrazione")
     public String registrazioneForm() {
         return "registrazione";
@@ -65,24 +58,25 @@ public class ViewController {
         }
     }
 
-    // ── Dashboard utente dopo login ────────────────────────────
     @GetMapping("/dashboard")
     public String dashboard(@AuthenticationPrincipal UserDetails userDetails,
                             Model model) {
         Utente utente = utenteService.findByUsername(userDetails.getUsername());
         model.addAttribute("utente", utente);
-        model.addAttribute("partite", partitaService.findByGiocatore(utente.getId()));
-        model.addAttribute("tornei", torneoService.findAll());
 
-        if (utente.getRuolo() == Utente.RuoloUtente.ADMIN_PIATTAFORMA ||
-                utente.getRuolo() == Utente.RuoloUtente.ADMIN_LOCALE ||
-                utente.getRuolo() == Utente.RuoloUtente.ADMIN_GIOCO) {
+        if (utente.getRuolo() == Utente.RuoloUtente.ADMIN_PIATTAFORMA) {
             return "redirect:/admin/dashboard";
         }
+        if (utente.getRuolo() == Utente.RuoloUtente.ADMIN_LOCALE ||
+                utente.getRuolo() == Utente.RuoloUtente.ADMIN_GIOCO) {
+            return "redirect:/admin/locale";
+        }
+
+        model.addAttribute("partite", partitaService.findByGiocatore(utente.getId()));
+        model.addAttribute("tornei", torneoService.findAll());
         return "utente/dashboard";
     }
 
-    // ── Profilo utente ─────────────────────────────────────────
     @GetMapping("/profilo")
     public String profilo(@AuthenticationPrincipal UserDetails userDetails,
                           Model model) {
@@ -92,7 +86,6 @@ public class ViewController {
         return "utente/profilo";
     }
 
-    // ── Giochi ─────────────────────────────────────────────────
     @GetMapping("/giochi")
     public String giochi(Model model) {
         model.addAttribute("giochi", giocoService.findAll());
@@ -126,7 +119,38 @@ public class ViewController {
         return "prenotazione";
     }
 
-    // ── Admin Locale — Partite ─────────────────────────────────
+    @GetMapping("/admin/dashboard")
+    public String adminDashboard(Model model) {
+        model.addAttribute("utenti", utenteService.findAll());
+        model.addAttribute("locali", localeService.findAll());
+        model.addAttribute("giochi", giocoService.findAll());
+        model.addAttribute("partite", partitaService.findAll());
+        model.addAttribute("tornei", torneoService.findAll());
+        return "admin/dashboard";
+    }
+
+    @GetMapping("/admin/utenti")
+    public String adminUtenti(Model model) {
+        model.addAttribute("utenti", utenteService.findAll());
+        return "admin/utenti";
+    }
+
+    @GetMapping("/admin/tornei")
+    public String adminTornei(Model model) {
+        model.addAttribute("tornei", torneoService.findAll());
+        model.addAttribute("giochi", giocoService.findAll());
+        model.addAttribute("locali", localeService.findAll());
+        return "admin/tornei";
+    }
+
+    @GetMapping("/admin/locale")
+    public String adminLocale(Model model) {
+        model.addAttribute("locali", localeService.findAll());
+        model.addAttribute("giochi", giocoService.findAll());
+        model.addAttribute("partite", partitaService.findAll());
+        return "admin/locale/dashboard";
+    }
+
     @GetMapping("/admin/locale/partite")
     public String adminLocalePartite(Model model) {
         model.addAttribute("partite", partitaService.findAll());
@@ -139,25 +163,6 @@ public class ViewController {
         model.addAttribute("giochi", giocoService.findAll());
         model.addAttribute("utenti", utenteService.findAll());
         return "admin/locale/nuova-partita";
-    }
-
-    @GetMapping("/dashboard")
-    public String dashboard(@AuthenticationPrincipal UserDetails userDetails,
-                            Model model) {
-        Utente utente = utenteService.findByUsername(userDetails.getUsername());
-        model.addAttribute("utente", utente);
-
-        if (utente.getRuolo() == Utente.RuoloUtente.ADMIN_PIATTAFORMA) {
-            return "redirect:/admin/dashboard";
-        }
-        if (utente.getRuolo() == Utente.RuoloUtente.ADMIN_LOCALE ||
-                utente.getRuolo() == Utente.RuoloUtente.ADMIN_GIOCO) {
-            return "redirect:/admin/locale";
-        }
-
-        model.addAttribute("partite", partitaService.findByGiocatore(utente.getId()));
-        model.addAttribute("tornei", torneoService.findAll());
-        return "utente/dashboard";
     }
 
     @PostMapping("/admin/locale/partite/nuova")
@@ -187,7 +192,6 @@ public class ViewController {
         return "redirect:/admin/locale/partite";
     }
 
-    // ── Admin Locale — Utenti iscritti ────────────────────────
     @GetMapping("/admin/locale/utenti")
     public String adminLocaleUtenti(Model model) {
         model.addAttribute("utenti", utenteService.findAll());
