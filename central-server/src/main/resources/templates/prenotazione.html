@@ -1,88 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout :: layout(~{::content})}">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Prenota un Gioco — Connected Games</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        nav { background: #1a1a2e; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        nav a { color: white; text-decoration: none; margin-left: 1.5rem; }
+        nav a:hover { color: #e94560; }
+        .container { max-width: 600px; margin: 3rem auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        h1 { color: #1a1a2e; margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.3rem; font-weight: bold; font-size: 0.9rem; color: #333; }
+        select, input { width: 100%; padding: 0.7rem; margin-bottom: 1.2rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; }
+        select:focus, input:focus { outline: none; border-color: #e94560; }
+        .btn { width: 100%; background: #e94560; color: white; border: none; padding: 0.85rem; border-radius: 6px; font-size: 1rem; cursor: pointer; font-weight: bold; }
+        .btn:hover { background: #c73652; }
+        .info-box { background: #e8f4fd; border-left: 4px solid #1a6eb0; padding: 0.8rem 1rem; border-radius: 4px; margin-bottom: 1.5rem; font-size: 0.9rem; color: #1a6eb0; }
+    </style>
+</head>
 <body>
-<div th:fragment="content">
-    <div class="page-title">📅 Prenota un gioco</div>
+<nav>
+    <span style="font-weight:bold;">🎮 Connected Games</span>
+    <div>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/dashboard}">Dashboard</a>
+        <a th:href="@{/giochi}">Giochi</a>
+        <a th:href="@{/tornei}">Tornei</a>
+        <a th:href="@{/logout}" style="color:#e94560;">Esci</a>
+    </div>
+</nav>
 
-    <div th:if="${messaggio}" class="alert alert-success" th:text="${messaggio}"></div>
-    <div th:if="${errore}" class="alert alert-error" th:text="${errore}"></div>
+<div class="container">
+    <h1>📅 Prenota un Gioco</h1>
 
     <div class="card">
-        <div class="card-title">Scegli il gioco</div>
-        <div class="game-grid">
-            <div th:each="g : ${giochi}"
-                 class="game-card"
-                 th:onclick="|selezionaGioco(${g.id}, '${g.nome}')|"
-                 th:id="|game-${g.id}|">
-                <div class="game-icon">🎮</div>
-                <div class="game-name" th:text="${g.nome}">Calciobalilla</div>
-                <div class="game-meta" th:text="${g.locale.nome}">Bar Belvedere</div>
-            </div>
+        <div class="info-box">
+            ℹ️ Seleziona il locale e il gioco che vuoi prenotare.
         </div>
-    </div>
 
-    <div class="card" id="slot-section" style="display:none;">
-        <div class="card-title">Slot disponibili — <span id="gioco-selezionato"></span></div>
-        <div id="slot-list">
-            <div class="booking-slot">
-                <div><div class="slot-time">14:00 – 14:30</div><div class="slot-info">Tavolo 1</div></div>
-                <form th:action="@{/prenotazioni/nuova}" method="post">
-                    <input type="hidden" name="giocoId" id="giocoId-14" value="">
-                    <input type="hidden" name="orario" value="14:00">
-                    <button type="submit" class="btn btn-primary">Prenota</button>
-                </form>
-            </div>
-            <div class="booking-slot">
-                <div><div class="slot-time">15:00 – 15:30</div><div class="slot-info">Tavolo 1</div></div>
-                <form th:action="@{/prenotazioni/nuova}" method="post">
-                    <input type="hidden" name="giocoId" id="giocoId-15" value="">
-                    <input type="hidden" name="orario" value="15:00">
-                    <button type="submit" class="btn btn-primary">Prenota</button>
-                </form>
-            </div>
-            <div class="booking-slot">
-                <div><div class="slot-time">16:30 – 17:00</div><div class="slot-info">Tavolo 2</div></div>
-                <form th:action="@{/prenotazioni/nuova}" method="post">
-                    <input type="hidden" name="giocoId" id="giocoId-16" value="">
-                    <input type="hidden" name="orario" value="16:30">
-                    <button type="submit" class="btn btn-primary">Prenota</button>
-                </form>
-            </div>
-        </div>
-    </div>
+        <form th:action="@{/prenotazione}" method="post">
+            <label>Locale</label>
+            <select name="localeId" required>
+                <option value="">-- Seleziona un locale --</option>
+                <option th:each="l : ${locali}"
+                        th:value="${l.id}"
+                        th:text="${l.nome} + ' — ' + ${l.indirizzo}">
+                    Locale
+                </option>
+            </select>
 
-    <div class="card">
-        <div class="card-title">Le mie prenotazioni</div>
-        <table class="table">
-            <thead>
-            <tr><th>Gioco</th><th>Locale</th><th>Orario</th><th>Stato</th><th></th></tr>
-            </thead>
-            <tbody>
-            <tr th:each="p : ${miePrenotazioni}">
-                <td th:text="${p.gioco.nome}">Calciobalilla</td>
-                <td th:text="${p.gioco.locale.nome}">Bar Belvedere</td>
-                <td th:text="${p.orario}">14:00</td>
-                <td><span class="badge badge-blue">Confermata</span></td>
-                <td>
-                    <form th:action="@{/prenotazioni/cancella/{id}(id=${p.id})}" method="post">
-                        <button type="submit" class="btn btn-danger">Cancella</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+            <label>Gioco</label>
+            <select name="giocoId" required>
+                <option value="">-- Seleziona un gioco --</option>
+                <option th:each="g : ${giochi}"
+                        th:value="${g.id}"
+                        th:text="${g.nome} + ' (' + ${g.tipo} + ')'">
+                    Gioco
+                </option>
+            </select>
 
-    <script>
-        function selezionaGioco(id, nome) {
-            document.querySelectorAll('.game-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('game-' + id).classList.add('selected');
-            document.getElementById('gioco-selezionato').textContent = nome;
-            document.getElementById('slot-section').style.display = 'block';
-            document.querySelectorAll('[id^="giocoId-"]').forEach(i => i.value = id);
-        }
-    </script>
+            <label>Data e Ora</label>
+            <input type="datetime-local" name="dataOra" required/>
+
+            <button class="btn" type="submit">📅 Prenota</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

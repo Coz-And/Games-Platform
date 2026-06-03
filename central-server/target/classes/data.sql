@@ -1,14 +1,9 @@
 -- Pulizia tabelle (ordine importante per le foreign key)
-DELETE FROM torneo_locali;
-DELETE FROM partita_giocatori;
-DELETE FROM risultati;
-DELETE FROM partite;
-DELETE FROM tornei;
-DELETE FROM giochi;
-DELETE FROM locali;
-DELETE FROM utenti;
+
 
 -- ── UTENTI ────────────────────────────────────────────────────
+
+
 -- Password per tutti: "password123" (BCrypt hash)
 INSERT INTO utenti (nome, cognome, email, username, password_hash, ruolo) VALUES
                                                                               ('Mario', 'Rossi', 'admin@connectedgames.it', 'admin',
