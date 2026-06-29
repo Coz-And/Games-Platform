@@ -1,5 +1,6 @@
 com/connectedgames/controller/UtenteController.class
 com/connectedgames/service/TorneoService.class
+com/connectedgames/controller/SimulazioneController.class
 com/connectedgames/service/LocaleService.class
 com/connectedgames/controller/PartitaController.class
 com/connectedgames/repository/RisultatoRepository.class

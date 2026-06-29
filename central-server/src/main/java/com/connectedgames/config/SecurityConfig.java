@@ -46,24 +46,21 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/",
-                                "/login",
-                                "/registrazione",
-                                "/giochi",
-                                "/partite",
-                                "/tornei",
-                                "/statistiche",
-                                "/prenotazione",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
+                                "/", "/login", "/registrazione",
+                                "/giochi", "/partite", "/tornei",
+                                "/statistiche", "/prenotazione",
+                                "/swagger-ui/**", "/v3/api-docs/**",
                                 "/h2-console/**"
                         ).permitAll()
                         .requestMatchers("/admin/dashboard")
                         .hasAuthority("ADMIN_PIATTAFORMA")
-                        .requestMatchers("/admin/locale", "/admin/locale/**", "/admin/locale/partite/**")
+                        .requestMatchers("/admin/locale", "/admin/locale/**",
+                                "/admin/locale/partite/**")
                         .hasAnyAuthority("ADMIN_LOCALE", "ADMIN_GIOCO", "ADMIN_PIATTAFORMA")
                         .requestMatchers("/admin/**")
                         .hasAnyAuthority("ADMIN_PIATTAFORMA", "ADMIN_LOCALE", "ADMIN_GIOCO")
+                        .requestMatchers("/simulazione/**")
+                        .hasAnyAuthority("ADMIN_LOCALE", "ADMIN_GIOCO", "ADMIN_PIATTAFORMA")
                         .requestMatchers("/dashboard", "/profilo").authenticated()
                         .anyRequest().authenticated()
                 )
