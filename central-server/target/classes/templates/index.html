@@ -22,10 +22,6 @@
 <body>
 <nav>
     <span style="font-weight:bold;">🎮 Connected Games</span>
-    <div>
-        <a th:href="@{/giochi}">Giochi</a>
-        <a th:href="@{/partite}">Partite</a>
-        <a th:href="@{/tornei}">Tornei</a>
         <a th:href="@{/login}">Accedi</a>
         <a th:href="@{/registrazione}"s>Registrati</a>
     </div>
@@ -38,30 +34,27 @@
 </div>
 
 <div class="container">
-    <div class="grid">
-        <div class="card">
-            <h2>⚽ Calciobalilla</h2>
-            <p>Sensori goal, inizio e fine partita. Statistiche in tempo reale.</p>
-            <span class="tag">Sensori goal</span>
-            <span class="tag">Timer</span>
-        </div>
-        <div class="card">
-            <h2>🎯 Freccette</h2>
-            <p>Rilevamento automatico del punteggio per ogni tiro.</p>
-            <span class="tag">Punteggio automatico</span>
-        </div>
-        <div class="card">
-            <h2>🎳 Bocce</h2>
-            <p>Sensori per rilevare la posizione delle bocce.</p>
-            <span class="tag">Posizione</span>
-        </div>
-        <div class="card">
-            <h2>🎲 Monopoli</h2>
-            <p>Registrazione eventi: passaggio dal via, acquisto proprietà e altro.</p>
-            <span class="tag">Eventi gioco</span>
-        </div>
+    <div class="card" style="margin-top:2rem;">
+        <h2>⚽ Calciobalilla</h2>
+        <p>Sensori goal, inizio e fine partita. Statistiche in tempo reale.</p>
+        <span class="tag">Sensori goal</span>
+        <span class="tag">Timer</span>
     </div>
-
+    <div class="card" style="margin-top:2rem;">
+        <h2>🎯 Freccette</h2>
+        <p>Rilevamento automatico del punteggio per ogni tiro.</p>
+        <span class="tag">Punteggio automatico</span>
+    </div>
+    <div class="card" style="margin-top:2rem;">
+        <h2>🎳 Bocce</h2>
+        <p>Sensori per rilevare la posizione delle bocce.</p>
+        <span class="tag">Posizione</span>
+    </div>
+    <div class="card" style="margin-top:2rem;">
+        <h2>🎲 Monopoli</h2>
+        <p>Registrazione eventi: passaggio dal via, acquisto proprietà e altro.</p>
+        <span class="tag">Eventi gioco</span>
+    </div>
     <div class="card" style="margin-top:2rem;">
         <h2>🏆 Tornei Attivi</h2>
         <p th:if="${#lists.isEmpty(tornei)}">Nessun torneo attivo al momento.</p>
