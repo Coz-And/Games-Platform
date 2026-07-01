@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Login — Connected Games</title>
+    <title>Login - Connected Games</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #1a1a2e; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
@@ -24,26 +24,26 @@
 <body>
 <div class="login-box">
     <div class="logo">
-        <h1>🎮 Connected Games</h1>
+        <h1>Connected Games</h1>
         <p>Accedi alla piattaforma</p>
     </div>
 
     <div class="msg-errore" th:if="${param.error}">
-        ❌ Username o password errati. Riprova.
+        Username o password errati. Riprova.
     </div>
     <div class="msg-successo" th:if="${param.logout}">
-        ✅ Logout effettuato con successo.
+        Logout effettuato con successo.
     </div>
     <div class="msg-successo" th:if="${param.success}">
-        ✅ Registrazione completata! Ora puoi accedere.
+        Registrazione completata! Ora puoi accedere.
     </div>
 
     <form th:action="@{/login}" method="post">
         <label>Username</label>
-        <input type="text" name="username" placeholder="Inserisci username" required/>
+        <input type="text" name="username" placeholder="Inserisci username" required="required"/>
 
         <label>Password</label>
-        <input type="password" name="password" placeholder="Inserisci password" required/>
+        <input type="password" name="password" placeholder="Inserisci password" required="required"/>
 
         <button class="btn" type="submit">Accedi</button>
     </form>
@@ -52,7 +52,7 @@
         Non hai un account? <a th:href="@{/registrazione}">Registrati</a>
     </div>
     <div class="footer-link">
-        Vuoi ritornare nella home <a th: href="@{/index}">Home</a>
+        Vuoi ritornare nella home? <a th:href="@{/}">Home</a>
     </div>
 </div>
 </body>

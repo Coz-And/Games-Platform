@@ -55,6 +55,11 @@ public class SecurityConfig {
                                 "/tornei",
                                 "/statistiche",
                                 "/prenotazione",
+                                "/error",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/webjars/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/h2-console/**"

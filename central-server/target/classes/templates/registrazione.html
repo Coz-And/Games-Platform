@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Registrazione — Connected Games</title>
+    <title>Registrazione - Connected Games</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #1a1a2e; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
@@ -26,53 +26,53 @@
 <body>
 <div class="reg-box">
     <div class="logo">
-        <h1>🎮 Connected Games</h1>
+        <h1>Connected Games</h1>
         <p>Crea il tuo account</p>
     </div>
 
     <div class="msg-errore" th:if="${param.error}">
-        ❌ Errore nella registrazione. Email o username già in uso.
+        Errore nella registrazione. Email o username gia in uso.
     </div>
     <div class="msg-successo" th:if="${param.success}">
-        ✅ Registrazione completata! Ora puoi accedere.
+        Registrazione completata! Ora puoi accedere.
     </div>
 
     <form th:action="@{/registrazione}" method="post">
         <div class="row">
             <div>
                 <label>Nome</label>
-                <input type="text" name="nome" placeholder="Mario" required minlength="2"/>
+                <input type="text" name="nome" placeholder="Mario" required="required" minlength="2"/>
             </div>
             <div>
                 <label>Cognome</label>
-                <input type="text" name="cognome" placeholder="Rossi" required minlength="2"/>
+                <input type="text" name="cognome" placeholder="Rossi" required="required" minlength="2"/>
             </div>
         </div>
 
         <label>Email</label>
-        <input type="email" name="email" placeholder="mario.rossi@email.it" required/>
+        <input type="email" name="email" placeholder="mario.rossi@email.it" required="required"/>
 
         <label>Username</label>
-        <input type="text" name="username" placeholder="Scegli uno username" required minlength="3"/>
+        <input type="text" name="username" placeholder="Scegli uno username" required="required" minlength="3"/>
 
         <label>Password</label>
-        <input type="password" name="password" placeholder="Minimo 8 caratteri" required minlength="8"/>
+        <input type="password" name="password" placeholder="Minimo 8 caratteri" required="required" minlength="8"/>
         <p class="password-hint">Minimo 8 caratteri</p>
 
         <label>Ruolo</label>
         <select name="ruolo">
-            <option value="GIOCATORE">🎮 Giocatore</option>
-            <option value="ADMIN_LOCALE">🏠 Amministratore Locale</option>
+            <option value="GIOCATORE">Giocatore</option>
+            <option value="ADMIN_LOCALE">Amministratore Locale</option>
         </select>
 
         <button class="btn" type="submit">Registrati</button>
     </form>
 
     <div class="footer-link">
-        Hai già un account? <a th:href="@{/login}">Accedi</a>
+        Hai gia un account? <a th:href="@{/login}">Accedi</a>
     </div>
     <div class="footer-link">
-        Vuoi ritornare nella home <a th: href="@{/index}">Home</a>
+        Vuoi ritornare nella home? <a th:href="@{/}">Home</a>
     </div>
 </div>
 </body>

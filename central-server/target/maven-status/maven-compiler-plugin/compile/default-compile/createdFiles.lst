@@ -18,6 +18,7 @@ com\connectedgames\model\Torneo.class
 com\connectedgames\config\SwaggerConfig.class
 com\connectedgames\model\Locale$TipoLocale.class
 com\connectedgames\repository\UtenteRepository.class
+com\connectedgames\controller\SimulazioneController.class
 com\connectedgames\model\Locale.class
 com\connectedgames\model\Partita$TipoPartita.class
 com\connectedgames\repository\GiocoRepository.class
