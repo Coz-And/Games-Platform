@@ -1,9 +1,0 @@
-com\connectedgames\service\GiocoServiceTest.class
-com\connectedgames\controller\PartitaControllerTest.class
-com\connectedgames\service\TorneoServiceTest.class
-com\connectedgames\service\UtenteControllerTest.class
-com\connectedgames\controller\LocaleControllerTest.class
-com\connectedgames\service\LocaleServiceTest.class
-com\connectedgames\service\PartitaServiceTest.class
-com\connectedgames\CentralServerApplicationTest.class
-com\connectedgames\service\UtenteServiceTest.class
