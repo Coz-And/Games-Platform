@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Utenti — Admin Locale</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        nav { background: #16213e; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        nav a { color: white; text-decoration: none; margin-left: 1.5rem; }
+        nav a:hover { color: #e94560; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        h1 { color: #1a1a2e; margin-bottom: 1.5rem; }
+        .card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        .card h2 { color: #1a1a2e; margin-bottom: 1rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        th { background: #f8f8f8; }
+        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; background: #cce5ff; color: #004085; }
+        .avatar { width: 32px; height: 32px; background: #e94560; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; font-weight: bold; margin-right: 0.5rem; vertical-align: middle; }
+    </style>
+</head>
+<body>
+<nav>
+    <span style="font-weight:bold;">🎮 Connected Games — Admin</span>
+    <div>
+        <a th:href="@{/admin/dashboard}">Dashboard</a>
+        <a th:href="@{/admin/utenti}">Utenti</a>
+        <a th:href="@{/admin/tornei}">Tornei</a>
+        <a th:href="@{/admin/locale}">Locali</a>
+        <a th:href="@{/logout}" style="color:#e94560;">Esci</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>👥 Utenti Iscritti</h1>
+
+    <div class="card">
+        <h2>Tutti gli Utenti —
+            <span th:text="${#lists.size(utenti)}">0</span> registrati
+        </h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Utente</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Ruolo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(utenti)}">
+                <td colspan="4"
+                    style="color:#888; text-align:center;">
+                    Nessun utente registrato
+                </td>
+            </tr>
+            <tr th:each="u : ${utenti}">
+                <td>
+                        <span class="avatar"
+                              th:text="${#strings.substring(u.nome,0,1)}">
+                            M
+                        </span>
+                    <span th:text="${u.nome} + ' ' + ${u.cognome}">
+                            Nome
+                        </span>
+                </td>
+                <td th:text="${u.email}">email</td>
+                <td th:text="'@' + ${u.username}">@username</td>
+                <td>
+                        <span class="badge" th:text="${u.ruolo}">
+                            RUOLO
+                        </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gestione Tornei</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; }
+        nav { background: #1a1a2e; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        nav a { color: white; text-decoration: none; margin-left: 1.5rem; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        h1 { color: #1a1a2e; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f0f0f0; }
+        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+<nav>
+    <span style="font-weight:bold;">🎮 Connected Games — Admin</span>
+    <div>
+        <a th:href="@{/admin/dashboard}">Dashboard</a>
+        <a th:href="@{/admin/utenti}">Utenti</a>
+        <a th:href="@{/admin/tornei}">Tornei</a>
+    </div>
+</nav>
+<div class="container">
+    <h1>🏆 Gestione Tornei</h1>
+    <div class="card">
+        <table>
+            <thead>
+            <tr><th>Nome</th><th>Tipo Gioco</th><th>Stato</th><th>Inizio</th><th>Locali</th></tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(tornei)}">
+                <td colspan="5" style="color:#888; text-align:center;">Nessun torneo</td>
+            </tr>
+            <tr th:each="t : ${tornei}">
+                <td th:text="${t.nome}">Nome</td>
+                <td th:text="${t.tipoGioco}">TIPO</td>
+                <td><span class="badge" th:text="${t.stato}">STATO</span></td>
+                <td th:text="${t.inizioTorneo}">-</td>
+                <td th:text="${t.locali != null ? #lists.size(t.locali) : 0}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

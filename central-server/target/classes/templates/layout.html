@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout(content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connected Games Platform</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; }
+        .navbar { background: #1a1a2e; color: white; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+        .navbar-brand { font-size: 16px; font-weight: 600; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .navbar-user { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+        .navbar-user a { color: #aaa; text-decoration: none; }
+        .navbar-user a:hover { color: white; }
+        .sidebar { position: fixed; top: 56px; left: 0; width: 220px; height: calc(100vh - 56px); background: white; border-right: 1px solid #e8e8e8; padding: 1rem 0; overflow-y: auto; }
+        .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 10px 1.5rem; font-size: 14px; color: #555; text-decoration: none; transition: all 0.15s; cursor: pointer; }
+        .sidebar-item:hover { background: #f5f5f5; color: #1a1a2e; }
+        .sidebar-item.active { background: #eef2ff; color: #4f46e5; font-weight: 500; border-right: 2px solid #4f46e5; }
+        .sidebar-icon { font-size: 18px; width: 20px; text-align: center; }
+        .sidebar-section { font-size: 11px; font-weight: 600; color: #aaa; padding: 16px 1.5rem 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .main { margin-left: 220px; padding: 2rem; min-height: calc(100vh - 56px); }
+        .page-title { font-size: 20px; font-weight: 600; margin-bottom: 1.5rem; color: #1a1a2e; }
+        .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 1.5rem; }
+        .metric { background: white; border-radius: 10px; padding: 1.25rem; border: 1px solid #e8e8e8; }
+        .metric-label { font-size: 12px; color: #888; margin-bottom: 4px; }
+        .metric-value { font-size: 26px; font-weight: 600; color: #1a1a2e; }
+        .metric-sub { font-size: 12px; color: #888; margin-top: 2px; }
+        .card { background: white; border-radius: 10px; border: 1px solid #e8e8e8; padding: 1.25rem; margin-bottom: 1.5rem; }
+        .card-title { font-size: 15px; font-weight: 600; margin-bottom: 1rem; color: #1a1a2e; }
+        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+        .badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 500; }
+        .badge-green { background: #dcfce7; color: #16a34a; }
+        .badge-blue { background: #dbeafe; color: #1d4ed8; }
+        .badge-amber { background: #fef3c7; color: #d97706; }
+        .badge-red { background: #fee2e2; color: #dc2626; }
+        .row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+        .row:last-child { border-bottom: none; }
+        .row-left { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 38px; height: 38px; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #1d4ed8; flex-shrink: 0; }
+        .avatar-amber { background: #fef3c7; color: #d97706; }
+        .avatar-green { background: #dcfce7; color: #16a34a; }
+        .avatar-red { background: #fee2e2; color: #dc2626; }
+        .row-name { font-size: 14px; font-weight: 500; }
+        .row-sub { font-size: 12px; color: #888; }
+        .btn { padding: 7px 14px; border-radius: 8px; border: 1px solid #e0e0e0; background: white; font-size: 13px; cursor: pointer; color: #333; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #f5f5f5; }
+        .btn-primary { background: #4f46e5; color: white; border-color: #4f46e5; }
+        .btn-primary:hover { background: #4338ca; }
+        .btn-danger { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 1rem; }
+        .game-card { background: #f9f9f9; border-radius: 10px; padding: 1rem; text-align: center; cursor: pointer; border: 1px solid #e8e8e8; transition: all 0.15s; }
+        .game-card:hover { border-color: #4f46e5; background: #eef2ff; }
+        .game-card.selected { border-color: #4f46e5; background: #eef2ff; }
+        .game-icon { font-size: 28px; margin-bottom: 8px; }
+        .game-name { font-size: 13px; font-weight: 600; }
+        .game-meta { font-size: 11px; color: #888; margin-top: 2px; }
+        .booking-slot { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 8px; border: 1px solid #e8e8e8; margin-bottom: 8px; background: #fafafa; }
+        .slot-time { font-size: 14px; font-weight: 500; }
+        .slot-info { font-size: 12px; color: #888; }
+        .progress-bar { height: 6px; background: #f0f0f0; border-radius: 99px; overflow: hidden; margin-top: 4px; }
+        .progress-fill { height: 100%; border-radius: 99px; }
+        .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 100px; }
+        .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .bar { width: 100%; border-radius: 4px 4px 0 0; }
+        .bar-label { font-size: 10px; color: #888; }
+        .bar-val { font-size: 10px; color: #555; }
+        .table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .table th { text-align: left; padding: 8px 12px; background: #f9f9f9; color: #555; font-weight: 500; border-bottom: 1px solid #e8e8e8; }
+        .table td { padding: 10px 12px; border-bottom: 1px solid #f5f5f5; }
+        .table tr:last-child td { border-bottom: none; }
+        .form-group { margin-bottom: 1rem; }
+        .form-label { font-size: 13px; font-weight: 500; margin-bottom: 4px; display: block; color: #444; }
+        .form-input { width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none; }
+        .form-input:focus { border-color: #4f46e5; }
+        .form-select { width: 100%; padding: 8px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; background: white; }
+        .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 1rem; font-size: 14px; }
+        .alert-success { background: #dcfce7; color: #16a34a; border: 1px solid #86efac; }
+        .alert-error { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a href="/" class="navbar-brand">🎮 Connected Games</a>
+    <div class="navbar-user">
+        <span sec:authentication="name">Utente</span>
+        <a href="/logout">Esci</a>
+    </div>
+</nav>
+
+<div class="sidebar">
+    <div sec:authorize="hasAnyAuthority('GIOCATORE', 'ADMIN_PIATTAFORMA')">
+        <div class="sidebar-section">Giocatore</div>
+        <a href="/dashboard" class="sidebar-item" th:classappend="${page == 'dashboard'} ? 'active'">
+            <span class="sidebar-icon">📊</span> Dashboard
+        </a>
+        <a href="/statistiche" class="sidebar-item" th:classappend="${page == 'statistiche'} ? 'active'">
+            <span class="sidebar-icon">📈</span> Statistiche
+        </a>
+        <a href="/prenotazioni" class="sidebar-item" th:classappend="${page == 'prenotazioni'} ? 'active'">
+            <span class="sidebar-icon">📅</span> Prenotazioni
+        </a>
+        <a href="/tornei" class="sidebar-item" th:classappend="${page == 'tornei'} ? 'active'">
+            <span class="sidebar-icon">🏆</span> Tornei
+        </a>
+    </div>
+    <div sec:authorize="hasAnyAuthority('ADMIN_LOCALE', 'ADMIN_GIOCO', 'ADMIN_PIATTAFORMA')">
+        <div class="sidebar-section">Locale</div>
+        <a href="/locale/dashboard" class="sidebar-item" th:classappend="${page == 'locale-dashboard'} ? 'active'">
+            <span class="sidebar-icon">🏪</span> Il mio locale
+        </a>
+        <a href="/locale/giochi" class="sidebar-item" th:classappend="${page == 'locale-giochi'} ? 'active'">
+            <span class="sidebar-icon">🎲</span> Gestione giochi
+        </a>
+        <a href="/locale/prenotazioni" class="sidebar-item" th:classappend="${page == 'locale-prenotazioni'} ? 'active'">
+            <span class="sidebar-icon">📋</span> Prenotazioni
+        </a>
+    </div>
+    <div sec:authorize="hasAuthority('ADMIN_PIATTAFORMA')">
+        <div class="sidebar-section">Piattaforma</div>
+        <a href="/admin/dashboard" class="sidebar-item" th:classappend="${page == 'admin-dashboard'} ? 'active'">
+            <span class="sidebar-icon">🛡️</span> Admin
+        </a>
+        <a href="/admin/utenti" class="sidebar-item" th:classappend="${page == 'admin-utenti'} ? 'active'">
+            <span class="sidebar-icon">👥</span> Utenti
+        </a>
+        <a href="/admin/locali" class="sidebar-item" th:classappend="${page == 'admin-locali'} ? 'active'">
+            <span class="sidebar-icon">🏢</span> Locali
+        </a>
+        <a href="/admin/tornei" class="sidebar-item" th:classappend="${page == 'admin-tornei'} ? 'active'">
+            <span class="sidebar-icon">🏆</span> Tornei
+        </a>
+    </div>
+</div>
+
+<main class="main">
+    <div th:replace="${content}"></div>
+</main>
+</body>
+</html>
