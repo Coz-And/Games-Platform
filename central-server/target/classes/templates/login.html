@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Login - Connected Games</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #1a1a2e; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: white; border-radius: 12px; padding: 2.5rem; width: 100%; max-width: 400px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        .logo { text-align: center; margin-bottom: 2rem; }
+        .logo h1 { font-size: 1.8rem; color: #1a1a2e; }
+        .logo p { color: #888; font-size: 0.9rem; margin-top: 0.3rem; }
+        label { display: block; margin-bottom: 0.3rem; font-weight: bold; font-size: 0.9rem; color: #333; }
+        input { width: 100%; padding: 0.7rem; margin-bottom: 1.2rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; }
+        input:focus { outline: none; border-color: #e94560; }
+        .btn { width: 100%; background: #e94560; color: white; border: none; padding: 0.85rem; border-radius: 6px; font-size: 1rem; cursor: pointer; font-weight: bold; }
+        .btn:hover { background: #c73652; }
+        .msg-errore { background: #f8d7da; color: #721c24; padding: 0.7rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; }
+        .msg-successo { background: #d4edda; color: #155724; padding: 0.7rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; }
+        .footer-link { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #666; }
+        .footer-link a { color: #e94560; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="login-box">
+    <div class="logo">
+        <h1>Connected Games</h1>
+        <p>Accedi alla piattaforma</p>
+    </div>
+
+    <div class="msg-errore" th:if="${param.error}">
+        Username o password errati. Riprova.
+    </div>
+    <div class="msg-successo" th:if="${param.logout}">
+        Logout effettuato con successo.
+    </div>
+    <div class="msg-successo" th:if="${param.success}">
+        Registrazione completata! Ora puoi accedere.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Inserisci username" required="required"/>
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Inserisci password" required="required"/>
+
+        <button class="btn" type="submit">Accedi</button>
+    </form>
+
+    <div class="footer-link">
+        Non hai un account? <a th:href="@{/registrazione}">Registrati</a>
+    </div>
+    <div class="footer-link">
+        Vuoi ritornare nella home? <a th:href="@{/}">Home</a>
+    </div>
+</div>
+</body>
+</html>
